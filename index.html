@@ -2,120 +2,165 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tejas Guduru | Software Engineer Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tejas Guduru | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --bg-light: #f4f4f4;
+      --bg-dark: #121212;
+      --text-light: #333;
+      --text-dark: #eee;
+      --primary: #007acc;
+    }
+
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background-color: #f4f4f4;
-      color: #333;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: all 0.3s ease;
     }
+
+    body.dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
     header {
-      background-color: #111;
+      background: linear-gradient(to right, #007acc, #00c6ff);
       color: white;
       padding: 2rem;
       text-align: center;
+      animation: fadeInDown 1s ease-out;
     }
+
     header h1 {
       margin: 0;
-      font-size: 2.5rem;
+      font-size: 2.8rem;
     }
+
     header p {
       margin-top: 0.5rem;
       font-size: 1.2rem;
     }
+
     .section {
       padding: 2rem;
       max-width: 850px;
       margin: auto;
+      animation: fadeIn 1s ease-out;
     }
+
     h2 {
       border-bottom: 2px solid #ccc;
       padding-bottom: 0.5rem;
     }
+
     .project {
       margin-bottom: 1.5rem;
     }
+
     footer {
       text-align: center;
       padding: 2rem;
       font-size: 0.9rem;
       color: #666;
     }
+
     a {
-      color: #007acc;
+      color: var(--primary);
       text-decoration: none;
     }
+
     a:hover {
       text-decoration: underline;
+    }
+
+    .dark-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: 2px solid white;
+      color: white;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .resume-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      background-color: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .resume-btn:hover {
+      background-color: #005b99;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
   <header>
+    <button class="dark-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
     <h1>Tejas Guduru</h1>
     <p>Software Engineer | MS CS @ UWM | C++, Python, AWS | 5+ YOE</p>
+    <a class="resume-btn" href="assets/Tejas_Guduru_Resume.pdf" download>Download Resume</a>
   </header>
 
   <section class="section">
     <h2>About Me</h2>
     <p>
-      I’m a detail-oriented and highly motivated Computer Science Master’s student at UWM with 5+ years of experience in software development. 
-      I specialize in building scalable applications using C++, Python, and cloud technologies like AWS. 
-      My interests span machine learning, natural language processing, and computer vision, with hands-on experience in end-to-end product development, web technologies, and system performance optimization.
+      Master’s student in Computer Science at UWM with over 5 years of professional experience in full-stack development, C++, Python, and AWS. Passionate about building efficient systems, enhancing user experience, and applying ML/NLP to solve real-world problems.
     </p>
   </section>
 
   <section class="section">
     <h2>Projects</h2>
-
     <div class="project">
       <h3>Pedestrian & Bicyclist Safety Dashboard</h3>
       <p>
-        Developed a real-time dashboard for the IPIT department to visualize pedestrian and bicyclist activity using computer vision (YOLO). 
-        Integrated PostgreSQL, Flask, and Dash for dynamic data rendering and map-based insights. 
-        <br />
-        <a href="http://129.89.34.10" target="_blank">Live Dashboard</a>
+        Real-time dashboard for visualizing traffic data with Dash + Flask, powered by YOLO and PostgreSQL.<br />
+        <a href="http://129.89.34.10" target="_blank">View Live</a>
       </p>
     </div>
 
     <div class="project">
-      <h3>EcoStrike – VR Bowling Game</h3>
+      <h3>EcoStrike VR Bowling Game</h3>
       <p>
-        Created an educational VR experience in Godot where players clean oceans and plant trees through immersive bowling gameplay. 
-        Used motion-based locomotion and diegetic UI design for seamless interaction.
+        Godot-powered immersive game promoting sustainability by letting players clean oceans and plant trees.
       </p>
     </div>
 
     <div class="project">
-      <h3>Job Application Automation Tool</h3>
+      <h3>Job Application Automation</h3>
       <p>
-        Built a Python automation pipeline using Selenium and resume parsers to tailor and submit job applications across portals. 
-        Improved speed and customization for mass job targeting.
+        Python + Selenium bot that customizes resumes and applies to jobs automatically with user input control.
       </p>
     </div>
   </section>
 
   <section class="section">
     <h2>Experience</h2>
-    <p><strong>Graduate Research Assistant</strong> – UWM (May 2024 – Present)</p>
     <ul>
-      <li>Developed data tools for crash analysis and pedestrian/bike detection using YOLO.</li>
-      <li>Improved visualization pipelines and collaborated with professors for academic research.</li>
-    </ul>
-
-    <p><strong>Software Engineer III</strong> – FactSet (Mar 2022 – Jul 2023)</p>
-    <ul>
-      <li>Refactored legacy systems, boosted performance, and led cloud migrations.</li>
-      <li>Used C++ and Python for efficient data scraping and analysis.</li>
-    </ul>
-
-    <p><strong>Software Engineer</strong> – Cyient (Sep 2018 – Mar 2022)</p>
-    <ul>
-      <li>Engineered GUI tools for aircraft engine diagnostics in C++/MFC.</li>
-      <li>Built dynamic libraries and conducted testing in Agile workflows.</li>
+      <li><strong>Graduate Research Assistant</strong> @ UWM (2024-Present): Crash analytics & computer vision research</li>
+      <li><strong>Software Engineer III</strong> @ FactSet (2022-2023): Cloud migration, data scraping in C++/Python</li>
+      <li><strong>Software Engineer</strong> @ Cyient (2018-2022): Built GUI tools for aircraft diagnostics in C++</li>
     </ul>
   </section>
 
@@ -128,7 +173,13 @@
   </section>
 
   <footer>
-    &copy; 2025 Tejas Guduru. Built with HTML, CSS, and ☕.
+    &copy; 2025 Tejas Guduru. Made with HTML, CSS, and ☕.
   </footer>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
 </body>
 </html>
