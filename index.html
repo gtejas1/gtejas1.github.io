@@ -15,6 +15,24 @@
   <script type="text/babel">
     const { useEffect, useState } = React;
 
+    function Tag({ text }) {
+      return (
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 mr-2 mb-2">
+          {text}
+        </span>
+      );
+    }
+
+    function SectionTitle({ eyebrow, title, subtitle }) {
+      return (
+        <div className="text-center mb-10">
+          <p className="uppercase tracking-widest text-sm text-blue-500 font-semibold">{eyebrow}</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold mt-2">{title}</h2>
+          {subtitle && <p className="text-gray-500 mt-3 max-w-2xl mx-auto">{subtitle}</p>}
+        </div>
+      );
+    }
+
     function App() {
       const [darkMode, setDarkMode] = useState(false);
       const [repos, setRepos] = useState([]);
@@ -25,119 +43,372 @@
           .then((data) => {
             const filtered = data.slice(0, 6);
             setRepos(filtered);
-          });
+          })
+          .catch(() => setRepos([]));
       }, []);
+
+      const stats = [
+        { label: "Industry Experience", value: "5+ yrs" },
+        { label: "Graduate GPA", value: "3.4" },
+        { label: "Core Stack", value: "Python · React · AWS" },
+        { label: "Base", value: "Milwaukee, WI" },
+      ];
+
+      const experiences = [
+        {
+          role: "Web Developer",
+          company: "University of Wisconsin–Milwaukee",
+          period: "May 2025 – Present",
+          summary:
+            "Delivering transportation analytics products as part of the Institute for Physical Infrastructure and Transportation.",
+          highlights: [
+            "Deploy full-stack Python/React/PostgreSQL applications on hardened Linux servers using Docker, Gunicorn, and Nginx.",
+            "Integrate REST APIs and automated ETL pipelines so transportation researchers and customers receive refreshed insights.",
+            "Build and tune computer-vision video analytics (YOLO, OpenCV) for real-time pedestrian and bicyclist detection and reporting.",
+          ],
+          tech: ["Python", "React", "PostgreSQL", "Docker", "Gunicorn", "Nginx"],
+        },
+        {
+          role: "Graduate Research Assistant",
+          company: "University of Wisconsin–Milwaukee",
+          period: "May 2024 – May 2025",
+          summary:
+            "Modernized and operated institute web applications and computer-vision workloads in support of transportation research.",
+          highlights: [
+            "Revamped and deployed a Python-based web app by configuring Linux servers with Nginx, Gunicorn, static IP, and domain setup for production use.",
+            "Coordinated with faculty and stakeholders to document workflows, troubleshoot launch issues, and ensure successful adoption.",
+            "Supported applied research by automating data collection and reporting processes for mobility studies.",
+          ],
+          tech: ["Python", "Flask", "Linux", "Nginx", "Gunicorn", "Automation"],
+        },
+        {
+          role: "Software Engineer III",
+          company: "FactSet",
+          period: "Mar 2022 – Jul 2023",
+          summary:
+            "Led modernization of data platforms serving investment professionals worldwide.",
+          highlights: [
+            "Refactored and enhanced legacy codebases, cutting technical debt by 30% and boosting maintainability.",
+            "Migrated monolithic applications to AWS using Lambda, S3, and DynamoDB to improve scalability and reduce costs.",
+            "Designed high-performance web scraping tools in Python and C++ to aggregate data from diverse sources.",
+          ],
+          tech: ["Python", "C++", "AWS Lambda", "S3", "DynamoDB", "CI/CD"],
+        },
+        {
+          role: "Software Engineer",
+          company: "Cyient",
+          period: "Sep 2018 – Mar 2022",
+          summary:
+            "Developed aerospace diagnostic tooling for engine health monitoring programs.",
+          highlights: [
+            "Engineered GUI-based applications for aircraft engine diagnostics using C++ and MFC, reducing downtime by 25%.",
+            "Developed DLLs and integrated them into diagnostic tools for real-time performance monitoring.",
+            "Collaborated directly with clients to capture requirements and deliver customized solutions aligned with operations.",
+          ],
+          tech: ["C++", "MFC", "Win32", "Diagnostics", "Client Support"],
+        },
+      ];
+
+      const projects = [
+        {
+          name: "Transportation Analytics Platform",
+          description:
+            "Customer-ready dashboards that transform sensor, video, and survey data into actionable transportation insights.",
+          impact: "Automated ETL pipelines and deployed REST APIs so project partners receive on-demand analytics.",
+          links: [{ label: "UWM IPIT", href: "https://uwm.edu/ipit/" }],
+          tags: ["Python", "React", "PostgreSQL", "Docker", "ETL"],
+        },
+        {
+          name: "Video Analytics Toolkit",
+          description:
+            "Computer-vision workflow leveraging YOLO and OpenCV for real-time pedestrian and bicyclist detection.",
+          impact: "Supports transportation safety studies by delivering accurate counts directly to research stakeholders.",
+          links: [],
+          tags: ["YOLO", "OpenCV", "Linux", "Automation"],
+        },
+        {
+          name: "Agile Cart with AWS CI/CD Pipeline",
+          description:
+            "Full-stack e-commerce experience featuring user registration, cart management, and admin dashboards for product and order control.",
+          impact: "Integrated Stripe for secure payments and delivered 99.9% uptime by hosting the Serverless stack on AWS.",
+          links: [{ label: "Request Details", href: "mailto:tejas.guduru@gmail.com" }],
+          tags: ["AWS", "Serverless", "Stripe", "React", "Lambda", "DynamoDB"],
+        },
+      ];
+
+      const skills = [
+        { title: "Programming Languages", items: ["C/C++", "Python", "JavaScript"] },
+        {
+          title: "Web & Application Tech",
+          items: ["REST APIs", "Node.js", "React.js", "Django", "Flask", "HTML/CSS"],
+        },
+        { title: "Databases", items: ["MongoDB", "PostgreSQL", "Microsoft SQL Server"] },
+        {
+          title: "Cloud & Tools",
+          items: ["AWS", "Redis", "Godot", "OpenXR", "MFC", "DevOps"],
+        },
+        {
+          title: "Version Control & Process",
+          items: ["Git", "Microsoft TFS", "Agile Collaboration"],
+        },
+        {
+          title: "Soft Skills",
+          items: ["Problem Solving", "Critical Thinking", "Communication", "Team Collaboration"],
+        },
+      ];
+
+      const education = [
+        {
+          school: "University of Wisconsin–Milwaukee",
+          degree: "Master's, Computer Science",
+          period: "Sep 2023 – May 2025",
+          detail: "GPA: 3.4",
+        },
+        {
+          school: "JNTU Hyderabad",
+          degree: "Bachelor's, Computer Science",
+          period: "Sep 2014 – Apr 2018",
+          detail: "Focus: Computer Science",
+        },
+      ];
 
       return (
         <div className={darkMode ? "dark" : ""}>
-          <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-            <header className="text-center py-10 bg-gradient-to-r from-blue-600 to-cyan-500 text-white relative">
-              <button
-                className="absolute top-4 right-4 border px-3 py-1 rounded-md border-white"
-                onClick={() => setDarkMode(!darkMode)}
-              >
-                Toggle Dark Mode
-              </button>
-              <h1 className="text-4xl font-bold">Tejas Guduru</h1>
-              <p className="text-lg mt-2">Software Engineer | MS CS @ UWM | C++, Python, AWS | 5+ YOE</p>
-              <a
-                href="https://www.linkedin.com/in/tejasguduru/details/resume/"
-                target="_blank"
-                className="inline-block mt-4 px-5 py-2 bg-white text-blue-700 font-semibold rounded-md hover:bg-gray-100"
-              >
-                View Resume
-              </a>
+          <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+            <header className="relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-400 opacity-90"></div>
+              <div className="relative max-w-6xl mx-auto px-6 pt-16 pb-24 text-white">
+                <div className="flex justify-end">
+                  <button
+                    className="border px-4 py-1.5 rounded-full border-white text-white text-sm font-semibold"
+                    onClick={() => setDarkMode(!darkMode)}
+                  >
+                    {darkMode ? "Light Mode" : "Dark Mode"}
+                  </button>
+                </div>
+                <div className="grid md:grid-cols-3 gap-8 items-center mt-6">
+                  <div className="md:col-span-2">
+                    <p className="uppercase tracking-[0.3em] text-sm text-cyan-100">Tejas Guduru</p>
+                    <h1 className="text-4xl md:text-5xl font-extrabold mt-4 leading-tight">
+                      Software engineer delivering scalable web, cloud, and AI solutions for transportation and finance teams.
+                    </h1>
+                    <p className="mt-4 text-lg text-cyan-50">
+                      MS Computer Science @ UWM · 5+ years across FactSet, Cyient, and IPIT labs · Focused on performant data systems, cloud deployments, and computer vision.
+                    </p>
+                    <div className="mt-6 grid gap-4 text-sm text-cyan-50 md:grid-cols-2">
+                      <p><span className="font-semibold text-white">Phone:</span> <a href="tel:+14145540441" className="hover:underline">+1 (414) 554-0441</a></p>
+                      <p><span className="font-semibold text-white">Email:</span> <a href="mailto:tejas.guduru@gmail.com" className="hover:underline">tejas.guduru@gmail.com</a></p>
+                      <p><span className="font-semibold text-white">Location:</span> Milwaukee, WI, USA</p>
+                      <p><span className="font-semibold text-white">LinkedIn:</span> <a href="https://www.linkedin.com/in/tejasguduru" target="_blank" className="hover:underline">/in/tejasguduru</a></p>
+                    </div>
+                    <div className="mt-8 flex flex-wrap gap-4">
+                      <a
+                        href="https://www.linkedin.com/in/tejasguduru/details/resume/"
+                        target="_blank"
+                        className="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold shadow-lg hover:-translate-y-0.5 transform transition"
+                      >
+                        Download Resume
+                      </a>
+                      <a
+                        href="mailto:tejas.guduru@gmail.com"
+                        className="border border-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition"
+                      >
+                        Schedule a Call
+                      </a>
+                    </div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur rounded-3xl p-6 shadow-2xl border border-white/20">
+                    <p className="text-sm uppercase tracking-widest text-cyan-100">Currently</p>
+                    <h3 className="text-2xl font-bold mt-2">Web Developer</h3>
+                    <p className="text-cyan-50 mt-2">
+                      Building full-stack data applications and computer-vision analytics for the University of Wisconsin–Milwaukee.
+                    </p>
+                    <div className="mt-6 space-y-2 text-sm">
+                      <p><span className="font-semibold">Location:</span> Milwaukee, WI</p>
+                      <p><span className="font-semibold">Focus:</span> Python, React, AWS, Computer Vision</p>
+                      <p><span className="font-semibold">Availability:</span> Actively seeking software roles</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <svg className="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" fillOpacity="0.15" d="M0,192L48,170.7C96,149,192,107,288,122.7C384,139,480,213,576,213.3C672,213,768,139,864,90.7C960,43,1056,21,1152,32C1248,43,1344,85,1392,106.7L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z" />
+              </svg>
             </header>
 
-            <section className="max-w-4xl mx-auto py-10 px-4">
-              <h2 className="text-2xl font-bold mb-4 border-b pb-2">About Me</h2>
-              <p>
-                Hi, I’m <strong>Tejas Guduru</strong> 👋<br />
-                I’m a passionate <strong>Software Engineer</strong> and <strong>Master’s student in Computer Science at the University of Wisconsin–Milwaukee</strong>, blending over 5 years of professional experience with cutting-edge academic research.
-                <br /><br />
-                My journey spans building <em>aircraft diagnostic systems in C++</em>, optimizing <em>web data extraction pipelines</em>, and developing <em>real-time safety dashboards</em> using YOLO, Flask, and PostgreSQL.
-                <br /><br />
-                I thrive at the intersection of <strong>software engineering and AI</strong>, with a deep interest in <strong>machine learning</strong>, <strong>natural language processing</strong>, and <strong>computer vision</strong>. Whether it’s designing immersive VR games in Godot or enhancing data-driven infrastructure tools, I bring creativity, performance, and clarity to every project.
-                <br /><br />
-                I’m currently seeking <strong>full-time opportunities</strong> where I can contribute to high-impact systems, learn from brilliant teams, and grow as a builder of scalable, human-centered software.
-              </p>
-            </section>
-
-            <section className="max-w-4xl mx-auto py-10 px-4">
-              <h2 className="text-2xl font-bold mb-4 border-b pb-2">Experience</h2>
-              <ul className="space-y-8">
-                <li>
-                  <div className="font-semibold text-lg">Graduate Research Assistant</div>
-                  <ul className="list-disc list-inside">
-                    <li>Developed data analysis tools for the IPIT department, facilitating dynamic crash information extraction and visualization.</li>
-                    <li>Implemented a real-time pedestrian and bicyclist counting system using computer vision and YOLO, improving traffic analysis accuracy.</li>
-                    <li>Collaborated with faculty to enhance academic projects, streamlining workflows and ensuring research precision.</li>
-                  </ul>
-                </li>
-                <li>
-                  <div className="font-semibold text-lg">Software Engineer III @ FactSet</div>
-                  <ul className="list-disc list-inside">
-                    <li>Refactored existing code to enhance functionality and resolve bugs, resulting in a more robust application.</li>
-                    <li>Migrated legacy applications to the cloud, improving scalability and reducing operational costs.</li>
-                    <li>Utilized Python and C++ for high-performance web scraping, increasing data retrieval speed and accuracy.</li>
-                  </ul>
-                </li>
-                <li>
-                  <div className="font-semibold text-lg">Software Engineer @ Cyient</div>
-                  <ul className="list-disc list-inside">
-                    <li>Engineered GUI-based applications for aircraft engine diagnostics using C++ and MFC, achieving a 25% reduction in downtime.</li>
-                    <li>Developed dynamic libraries (DLLs) for real-time performance monitoring, enhancing diagnostic tool efficiency.</li>
-                    <li>Collaborated with clients to gather requirements, delivering tailored solutions that met operational needs.</li>
-                    <li>Conducted unit and manual testing, ensuring high-quality deliverables in an Agile environment.</li>
-                  </ul>
-                </li>
-              </ul>
-            </section>
-
-            <section className="max-w-4xl mx-auto py-10 px-4">
-              <h2 className="text-2xl font-bold mb-4 border-b pb-2">Projects</h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-xl font-semibold">Agile Cart with AWS CI/CD Pipeline</h3>
-                  <p>
-                    Designed and implemented a full-stack e-commerce platform with features like user registration, cart management, and admin dashboard for product and order management.
-                    Integrated Stripe for secure payment processing and hosted the application on AWS using Serverless Framework, Lambda, and S3, achieving 99.9% uptime.
-                    <br />
-                    <a href="https://www.uwm-cloudblog.net/general/agile-cart-with-ci-cd-pipeline/" className="text-blue-500 underline" target="_blank">Project Link</a>
-                  </p>
+            <main className="max-w-6xl mx-auto px-6 -mt-16 space-y-20 pb-20">
+              <section className="bg-white dark:bg-gray-800 shadow-xl rounded-3xl p-10">
+                <SectionTitle
+                  eyebrow="Snapshot"
+                  title="Impact at a glance"
+                  subtitle="Software engineer with a graduate CS background, strong systems fundamentals, and a track record of shipping data-driven products."
+                />
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  {stats.map((stat) => (
+                    <div key={stat.label} className="text-center border border-gray-100 dark:border-gray-700 rounded-2xl p-6 shadow-sm">
+                      <p className="text-3xl font-extrabold text-blue-600 dark:text-cyan-400">{stat.value}</p>
+                      <p className="mt-2 text-sm uppercase tracking-wide text-gray-500">{stat.label}</p>
+                    </div>
+                  ))}
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold">EcoStrike – VR Game</h3>
-                  <p>
-                    Developed EcoStrike, a VR bowling game that makes learning about the environment fun and interactive. 🌍🎳 Players clear ocean trash and plant virtual trees with each strike, blending engaging gameplay with sustainability education.
-                    Implemented Walking-in-Place Using Hand-Swinging Movement for immersive navigation, Teleportation with Rapid Transition for smooth movement, and Raycasting with Controller Trigger for precise interactions.
-                    Designed a Diegetic Menu to keep the experience seamless and intuitive.
-                    <br />
-                    <a href="https://www.linkedin.com/in/tejasguduru/overlay/1744146069875/single-media-viewer?type=LINK&profileId=ACoAAB-RbicBBwAN8T1iwnH6FfbllytQudDjPO4&lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3B8uIohDrhTNyoUIfc989yug%3D%3D" className="text-blue-500 underline" target="_blank">Project Video</a>
-                  </p>
-                </div>
-              </div>
-            </section>
+              </section>
 
-            <section className="max-w-4xl mx-auto py-10 px-4">
-              <h2 className="text-2xl font-bold mb-4 border-b pb-2">GitHub Repositories</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {repos.map((repo) => (
-                  <div key={repo.id} className="p-4 border rounded-lg dark:border-gray-600">
-                    <h3 className="text-lg font-semibold">
-                      <a href={repo.html_url} target="_blank" className="hover:underline text-blue-500">
-                        {repo.name}
-                      </a>
-                    </h3>
-                    <p className="text-sm mt-1">{repo.description}</p>
-                    <p className="text-xs mt-2 text-gray-500 dark:text-gray-400">Language: {repo.language}</p>
+              <section>
+                <SectionTitle
+                  eyebrow="Experience"
+                  title="Leading with clarity and measurable outcomes"
+                  subtitle="Recent roles where I delivered production systems, mentored teammates, and partnered with stakeholders."
+                />
+                <div className="space-y-10">
+                  {experiences.map((exp) => (
+                    <article key={exp.role} className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700">
+                      <div className="flex flex-wrap justify-between items-start gap-4">
+                        <div>
+                          <p className="text-sm uppercase tracking-widest text-blue-500">{exp.period}</p>
+                          <h3 className="text-2xl font-bold mt-2">{exp.role}</h3>
+                          <p className="text-gray-500 dark:text-gray-300">{exp.company}</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {exp.tech.map((tech) => (
+                            <Tag key={tech} text={tech} />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="mt-4 text-lg text-gray-700 dark:text-gray-200">{exp.summary}</p>
+                      <ul className="mt-6 space-y-3 text-gray-600 dark:text-gray-300 list-disc list-inside">
+                        {exp.highlights.map((item, idx) => (
+                          <li key={idx}>{item}</li>
+                        ))}
+                      </ul>
+                    </article>
+                  ))}
+                </div>
+              </section>
+
+              <section className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl">
+                <SectionTitle
+                  eyebrow="Education"
+                  title="Formal training"
+                  subtitle="Blending advanced computer science study with hands-on software delivery."
+                />
+                <div className="space-y-6">
+                  {education.map((entry) => (
+                    <div key={entry.school} className="flex flex-col md:flex-row md:items-center md:justify-between border border-gray-100 dark:border-gray-700 rounded-2xl p-6">
+                      <div>
+                        <p className="text-sm uppercase tracking-widest text-blue-500">{entry.period}</p>
+                        <h3 className="text-xl font-semibold mt-2">{entry.school}</h3>
+                        <p className="text-gray-600 dark:text-gray-300">{entry.degree}</p>
+                      </div>
+                      <p className="mt-4 md:mt-0 text-gray-500 dark:text-gray-400">{entry.detail}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section>
+                <SectionTitle
+                  eyebrow="Projects"
+                  title="Recent builds I'm proud of"
+                  subtitle="Pragmatic experiments that shipped, earned users, or accelerated research."
+                />
+                <div className="grid md:grid-cols-3 gap-6">
+                  {projects.map((project) => (
+                    <article key={project.name} className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-xl font-semibold">{project.name}</h3>
+                        <span className="text-2xl">🚀</span>
+                      </div>
+                      <p className="mt-3 text-gray-600 dark:text-gray-300 flex-1">{project.description}</p>
+                      <p className="mt-4 text-sm font-semibold text-blue-500">{project.impact}</p>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {project.tags.map((tag) => (
+                          <Tag key={tag} text={tag} />
+                        ))}
+                      </div>
+                      {project.links && project.links.length > 0 && (
+                        <div className="mt-4 flex flex-wrap gap-4 text-sm font-semibold">
+                          {project.links.map((link) => (
+                            <a key={link.label} href={link.href} target="_blank" className="text-blue-600 hover:underline">
+                              {link.label}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </article>
+                  ))}
+                </div>
+              </section>
+
+              <section className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl">
+                <SectionTitle
+                  eyebrow="Skills"
+                  title="Tooling I reach for"
+                  subtitle="Comfortable jumping across the stack, wrangling data, and storytelling through UX."
+                />
+                <div className="grid md:grid-cols-3 gap-8">
+                  {skills.map((group) => (
+                    <div key={group.title} className="border border-gray-100 dark:border-gray-700 rounded-2xl p-6">
+                      <h3 className="font-semibold text-lg text-blue-500">{group.title}</h3>
+                      <ul className="mt-4 space-y-2 text-gray-700 dark:text-gray-200">
+                        {group.items.map((item) => (
+                          <li key={item} className="flex items-center">
+                            <span className="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section>
+                <SectionTitle
+                  eyebrow="GitHub"
+                  title="Recently updated repositories"
+                  subtitle="A quick peek into the playground."
+                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {repos.length === 0 && (
+                    <p className="text-gray-500">Fetching repositories...</p>
+                  )}
+                  {repos.map((repo) => (
+                    <div key={repo.id} className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700">
+                      <h3 className="text-lg font-semibold">
+                        <a href={repo.html_url} target="_blank" className="hover:underline text-blue-600">
+                          {repo.name}
+                        </a>
+                      </h3>
+                      <p className="text-sm mt-2 text-gray-600 dark:text-gray-300">{repo.description || "No description provided."}</p>
+                      <p className="text-xs mt-4 text-gray-500 dark:text-gray-400">Language: {repo.language || "N/A"}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-3xl p-10 shadow-2xl">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div>
+                    <p className="uppercase tracking-[0.3em] text-sm text-blue-100">Next role</p>
+                    <h3 className="text-3xl font-extrabold mt-3">Ready to contribute as a software engineer.</h3>
+                    <p className="mt-4 text-blue-50 max-w-2xl">
+                      I'm seeking opportunities where I can apply my experience in Python, React, AWS, and computer vision to build performant, scalable solutions. Let's connect if you're hiring for teams that value impact and continuous learning.
+                    </p>
                   </div>
-                ))}
-              </div>
-            </section>
+                  <div className="space-y-4 text-center">
+                    <a href="mailto:tejas.guduru@gmail.com" className="inline-block bg-white text-blue-700 font-semibold px-8 py-3 rounded-full shadow-lg">
+                      Email Me
+                    </a>
+                    <a href="https://www.linkedin.com/in/tejasguduru" target="_blank" className="inline-block border border-white px-8 py-3 rounded-full font-semibold">
+                      LinkedIn
+                    </a>
+                  </div>
+                </div>
+              </section>
+            </main>
 
-            <footer className="text-center py-10 text-sm text-gray-500">
-              &copy; 2025 Tejas Guduru. Built with React + TailwindCSS
+            <footer className="text-center py-10 text-sm text-gray-500 dark:text-gray-400">
+              &copy; {new Date().getFullYear()} Tejas Guduru. Crafted with React + TailwindCSS.
             </footer>
           </div>
         </div>
