@@ -1,421 +1,773 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tejas Guduru | Portfolio </title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <title>Tejas Guduru — AI/ML &amp; Web Engineer</title>
+  <meta name="description" content="Tejas Guduru — Software Engineer with 6+ years specializing in AI/ML, Computer Vision, RAG pipelines, and Full-Stack development." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+        }
+      }
+    };
+  </script>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #818cf8 0%, #a78bfa 45%, #67e8f9 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50%       { background-position: 100% 50%; }
+    }
+
+    .bg-dots {
+      background-image: radial-gradient(rgba(99,102,241,0.18) 1px, transparent 1px);
+      background-size: 26px 26px;
+    }
+
+    .card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+    .card-hover:hover { transform: translateY(-3px); }
+
+    .cursor-blink { animation: blink 1s step-end infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #09090b; }
+    ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
-<body class="bg-gray-100">
+<body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useEffect, useState } = React;
+    const { useState, useEffect, useRef } = React;
 
-    function Tag({ text }) {
+    /* ─── Data ──────────────────────────────────────────────────────────── */
+
+    const EXPERIENCE = [
+      {
+        company: "University of Wisconsin–Milwaukee",
+        role: "Software Engineer (AI/ML & Web)",
+        dept: "Institute for Physical Infrastructure and Transportation (IPIT)",
+        period: "Aug 2025 – Present",
+        location: "Milwaukee, WI",
+        current: true,
+        highlights: [
+          "Designed and implemented RAG pipelines for contextual document search and intelligent query answering over large corpora.",
+          "Built full-stack AI-driven web apps using Python (Flask/Dash) and React with real-time data visualization and conversational interfaces.",
+          "Deployed scalable AI services on Ubuntu servers using Docker, Gunicorn, and Nginx with optimized low-latency API integration.",
+          "Engineered real-time computer vision systems (YOLO, OpenCV) for live pedestrian/bicycle detection integrated into web analytics dashboards.",
+        ],
+        tags: ["RAG", "Python", "Flask", "Dash", "React", "Docker", "YOLO", "OpenCV", "Nginx", "LLM"],
+      },
+      {
+        company: "University of Wisconsin–Milwaukee",
+        role: "Graduate Research Assistant",
+        dept: null,
+        period: "May 2024 – Jul 2025",
+        location: "Milwaukee, WI",
+        current: false,
+        highlights: [
+          "Built a PII de-identification NLP pipeline using transformer models to classify, anonymize, and redact sensitive information at scale.",
+          "Revamped and deployed a Python web application: configured Linux server with Nginx, Gunicorn, static IP, and domain for production.",
+        ],
+        tags: ["NLP", "Transformers", "Python", "HuggingFace", "Linux", "Nginx", "Gunicorn"],
+      },
+      {
+        company: "University of Wisconsin–Milwaukee",
+        role: "Graduate Teaching Assistant",
+        dept: null,
+        period: "Jan 2025 – May 2025",
+        location: "Milwaukee, WI",
+        current: false,
+        highlights: [
+          "Graded assignments, quizzes, and exams for Introduction to Machine Learning, Introduction to Artificial Intelligence, and Rich Internet Applications.",
+        ],
+        tags: ["Machine Learning", "Artificial Intelligence", "Teaching"],
+      },
+      {
+        company: "FactSet",
+        role: "Software Engineer III",
+        dept: null,
+        period: "Mar 2022 – Jul 2023",
+        location: "Hyderabad, India",
+        current: false,
+        highlights: [
+          "Developed Python web scraping pipelines on AWS EC2 to collect financial data from APIs, news sources, and external websites.",
+          "Built and enhanced C++ Windows tools to classify financial research documents (relevant vs. irrelevant) for analyst consumption.",
+          "Contributed to cloud migration of legacy data-processing tools, improving scalability and reliability of FactSet's data ingestion.",
+          "Delivered ML-assisted document classification in Agile SCRUM teams (2-week sprints) using Jira.",
+        ],
+        tags: ["Python", "C++", "AWS EC2", "Web Scraping", "ML", "Agile", "Jira"],
+      },
+      {
+        company: "Pratt & Whitney",
+        role: "Software Engineer",
+        dept: null,
+        period: "Sep 2018 – Mar 2022",
+        location: "Hyderabad, India",
+        current: false,
+        highlights: [
+          "Developed C++ Windows applications (MFC + Qt, Visual Studio) for aircraft engine diagnostics used by P&W mechanical engineers.",
+          "Built MonitorTMGUI: real-time engine health monitoring tool connecting laptops to aircraft engines via Wi-Fi/USB from the cockpit.",
+          "Designed C++ DLL modules to decrypt encrypted engine sensor data into human-readable formats for graphical visualization.",
+          "Collaborated with aerospace engineers to translate diagnostic requirements into production-ready software features.",
+        ],
+        tags: ["C++", "MFC", "Qt", "Visual Studio", "Windows", "Real-time Systems", "Agile"],
+      },
+    ];
+
+    const SKILLS = {
+      "AI / ML": ["RAG (Retrieval-Augmented Generation)", "Computer Vision", "YOLO", "OpenCV", "NLP", "Transformer Models", "LLM Integration"],
+      "Languages": ["Python", "C / C++", "JavaScript", "SQL"],
+      "Web & APIs": ["Flask", "Dash", "FastAPI", "React", "Node.js", "REST APIs", "HTML / CSS"],
+      "Data & Databases": ["PostgreSQL", "MongoDB", "SQL Server", "ETL Pipelines"],
+      "Cloud & DevOps": ["AWS (EC2, Lambda, S3)", "Docker", "Nginx", "Gunicorn", "Ubuntu / Linux"],
+      "Tools & Practices": ["Git", "Jira", "Agile / Scrum", "System Design", "CI/CD"],
+    };
+
+    const PROJECTS = [
+      {
+        title: "Transportation Safety Analytics Platform",
+        desc: "End-to-end statewide analytics platform with real-time data ingestion, ETL pipelines, REST APIs, and interactive Dash dashboards for infrastructure planning.",
+        tags: ["Python", "Flask", "PostgreSQL", "Dash", "Docker", "Nginx"],
+        icon: "🗺️",
+      },
+      {
+        title: "Real-Time Video Analytics Toolkit",
+        desc: "Computer vision pipeline using YOLO and OpenCV for live pedestrian and bicycle detection, streaming analytics into web dashboards with real-time alerts.",
+        tags: ["YOLO", "OpenCV", "Python", "React", "WebSockets"],
+        icon: "🎥",
+      },
+      {
+        title: "RAG Document Search System",
+        desc: "Intelligent retrieval system using RAG and vector embeddings, enabling natural language queries over large document corpora with contextual, grounded answers.",
+        tags: ["RAG", "LLM", "Python", "Vector DB", "Flask"],
+        icon: "🔍",
+      },
+      {
+        title: "PII De-identification Pipeline",
+        desc: "NLP pipeline using HuggingFace transformer models to automatically classify, anonymize, and redact personally identifiable information from large text datasets.",
+        tags: ["NLP", "Transformers", "HuggingFace", "Python"],
+        icon: "🔒",
+      },
+      {
+        title: "MonitorTMGUI — Engine Diagnostics",
+        desc: "C++ Windows application for real-time aircraft engine health monitoring over Wi-Fi/USB, with DLL-based telemetry processing and interactive visualization.",
+        tags: ["C++", "MFC", "Qt", "Windows", "Real-time"],
+        icon: "✈️",
+      },
+      {
+        title: "Financial Data Ingestion Platform",
+        desc: "Scalable web scraping and data pipeline on AWS EC2 collecting financial data from APIs and news feeds, powering ML-assisted document classification.",
+        tags: ["Python", "AWS EC2", "Web Scraping", "ML"],
+        icon: "📈",
+      },
+    ];
+
+    /* ─── Helpers ───────────────────────────────────────────────────────── */
+
+    function useFadeUp() {
+      const ref = useRef(null);
+      useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        el.classList.add('fade-up');
+        const obs = new IntersectionObserver(
+          ([entry]) => { if (entry.isIntersecting) { el.classList.add('visible'); obs.disconnect(); } },
+          { threshold: 0.1 }
+        );
+        obs.observe(el);
+        return () => obs.disconnect();
+      }, []);
+      return ref;
+    }
+
+    /* ─── Typewriter ────────────────────────────────────────────────────── */
+
+    function Typewriter({ texts, speed = 75, pause = 1800 }) {
+      const [idx, setIdx] = useState(0);
+      const [char, setChar] = useState(0);
+      const [del, setDel] = useState(false);
+
+      useEffect(() => {
+        const cur = texts[idx];
+        let t;
+        if (!del && char < cur.length) {
+          t = setTimeout(() => setChar(c => c + 1), speed);
+        } else if (!del && char === cur.length) {
+          t = setTimeout(() => setDel(true), pause);
+        } else if (del && char > 0) {
+          t = setTimeout(() => setChar(c => c - 1), speed / 2);
+        } else {
+          setDel(false);
+          setIdx(i => (i + 1) % texts.length);
+        }
+        return () => clearTimeout(t);
+      }, [char, del, idx, texts, speed, pause]);
+
       return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 mr-2 mb-2">
-          {text}
+        <span>
+          {texts[idx].slice(0, char)}
+          <span className="cursor-blink text-indigo-400">|</span>
         </span>
       );
     }
 
-    function SectionTitle({ eyebrow, title, subtitle }) {
+    /* ─── Nav ───────────────────────────────────────────────────────────── */
+
+    function Nav({ dark, toggleDark }) {
+      const [scrolled, setScrolled] = useState(false);
+      const [open, setOpen] = useState(false);
+
+      useEffect(() => {
+        const h = () => setScrolled(window.scrollY > 30);
+        window.addEventListener('scroll', h);
+        return () => window.removeEventListener('scroll', h);
+      }, []);
+
+      const links = [
+        { label: 'About',      href: '#about' },
+        { label: 'Experience', href: '#experience' },
+        { label: 'Skills',     href: '#skills' },
+        { label: 'Projects',   href: '#projects' },
+        { label: 'Contact',    href: '#contact' },
+      ];
+
+      const navBg = dark
+        ? scrolled ? 'bg-zinc-950/90 border-b border-zinc-800/60' : 'bg-transparent'
+        : scrolled ? 'bg-white/90 border-b border-gray-200'       : 'bg-transparent';
+
       return (
-        <div className="text-center mb-10">
-          <p className="uppercase tracking-widest text-sm text-blue-500 font-semibold">{eyebrow}</p>
-          <h2 className="text-3xl md:text-4xl font-extrabold mt-2">{title}</h2>
-          {subtitle && <p className="text-gray-500 mt-3 max-w-2xl mx-auto">{subtitle}</p>}
-        </div>
+        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-md ${navBg}`}>
+          <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#top" className="font-black text-xl tracking-tight">
+              <span className="gradient-text">TG.</span>
+            </a>
+
+            <div className="hidden md:flex items-center gap-8">
+              {links.map(l => (
+                <a key={l.label} href={l.href}
+                  className={`text-sm font-medium transition-colors duration-200 ${dark ? 'text-zinc-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'}`}>
+                  {l.label}
+                </a>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button onClick={toggleDark}
+                className={`p-2 rounded-lg transition-all text-lg ${dark ? 'text-zinc-400 hover:text-white hover:bg-zinc-800' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'}`}>
+                {dark ? '☀️' : '🌙'}
+              </button>
+              <a href="mailto:tejas.guduru@gmail.com"
+                className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-lg transition-all hover:-translate-y-0.5 shadow-md shadow-indigo-500/20">
+                Hire Me
+              </a>
+              <button onClick={() => setOpen(!open)}
+                className={`md:hidden p-2 rounded-lg text-lg transition-colors ${dark ? 'text-zinc-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'}`}>
+                {open ? '✕' : '☰'}
+              </button>
+            </div>
+          </div>
+
+          {open && (
+            <div className={`md:hidden border-t px-6 py-4 flex flex-col gap-4 ${dark ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-gray-200'}`}>
+              {links.map(l => (
+                <a key={l.label} href={l.href} onClick={() => setOpen(false)}
+                  className={`text-sm py-1 font-medium ${dark ? 'text-zinc-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
+                  {l.label}
+                </a>
+              ))}
+              <a href="mailto:tejas.guduru@gmail.com"
+                className="mt-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg text-center">
+                Hire Me
+              </a>
+            </div>
+          )}
+        </nav>
       );
     }
 
-    function App() {
-      const [darkMode, setDarkMode] = useState(false);
-      const [repos, setRepos] = useState([]);
+    /* ─── Hero ──────────────────────────────────────────────────────────── */
 
-      useEffect(() => {
-        fetch("https://api.github.com/users/gtejas1/repos?sort=updated")
-          .then((res) => res.json())
-          .then((data) => {
-            const filtered = data.slice(0, 6);
-            setRepos(filtered);
-          })
-          .catch(() => setRepos([]));
-      }, []);
-
-      const stats = [
-        { label: "Industry Experience", value: "5+ yrs" },
-        { label: "Graduate GPA", value: "3.4" },
-        { label: "Core Stack", value: "Python · React · AWS" },
-        { label: "Base", value: "Milwaukee, WI" },
-      ];
-
-      const experiences = [
-        {
-          role: "Web Developer",
-          company: "University of Wisconsin–Milwaukee",
-          period: "May 2025 – Present",
-          summary:
-            "Delivering transportation analytics products as part of the Institute for Physical Infrastructure and Transportation.",
-          highlights: [
-            "Deploy full-stack Python/React/PostgreSQL applications on hardened Linux servers using Docker, Gunicorn, and Nginx.",
-            "Integrate REST APIs and automated ETL pipelines so transportation researchers and customers receive refreshed insights.",
-            "Build and tune computer-vision video analytics (YOLO, OpenCV) for real-time pedestrian and bicyclist detection and reporting.",
-          ],
-          tech: ["Python", "React", "PostgreSQL", "Docker", "Gunicorn", "Nginx"],
-        },
-        {
-          role: "Graduate Research Assistant",
-          company: "University of Wisconsin–Milwaukee",
-          period: "May 2024 – May 2025",
-          summary:
-            "Modernized and operated institute web applications and computer-vision workloads in support of transportation research.",
-          highlights: [
-            "Revamped and deployed a Python-based web app by configuring Linux servers with Nginx, Gunicorn, static IP, and domain setup for production use.",
-            "Coordinated with faculty and stakeholders to document workflows, troubleshoot launch issues, and ensure successful adoption.",
-            "Supported applied research by automating data collection and reporting processes for mobility studies.",
-          ],
-          tech: ["Python", "Flask", "Linux", "Nginx", "Gunicorn", "Automation"],
-        },
-        {
-          role: "Software Engineer III",
-          company: "FactSet",
-          period: "Mar 2022 – Jul 2023",
-          summary:
-            "Led modernization of data platforms serving investment professionals worldwide.",
-          highlights: [
-            "Refactored and enhanced legacy codebases, cutting technical debt by 30% and boosting maintainability.",
-            "Migrated monolithic applications to AWS using Lambda, S3, and DynamoDB to improve scalability and reduce costs.",
-            "Designed high-performance web scraping tools in Python and C++ to aggregate data from diverse sources.",
-          ],
-          tech: ["Python", "C++", "AWS Lambda", "S3", "DynamoDB", "CI/CD"],
-        },
-        {
-          role: "Software Engineer",
-          company: "Cyient",
-          period: "Sep 2018 – Mar 2022",
-          summary:
-            "Developed aerospace diagnostic tooling for engine health monitoring programs.",
-          highlights: [
-            "Engineered GUI-based applications for aircraft engine diagnostics using C++ and MFC, reducing downtime by 25%.",
-            "Developed DLLs and integrated them into diagnostic tools for real-time performance monitoring.",
-            "Collaborated directly with clients to capture requirements and deliver customized solutions aligned with operations.",
-          ],
-          tech: ["C++", "MFC", "Win32", "Diagnostics", "Client Support"],
-        },
-      ];
-
-      const projects = [
-        {
-          name: "Transportation Analytics Platform",
-          description:
-            "Customer-ready dashboards that transform sensor, video, and survey data into actionable transportation insights.",
-          impact: "Automated ETL pipelines and deployed REST APIs so project partners receive on-demand analytics.",
-          links: [{ label: "UWM IPIT", href: "https://uwm.edu/ipit/" }],
-          tags: ["Python", "React", "PostgreSQL", "Docker", "ETL"],
-        },
-        {
-          name: "Video Analytics Toolkit",
-          description:
-            "Computer-vision workflow leveraging YOLO and OpenCV for real-time pedestrian and bicyclist detection.",
-          impact: "Supports transportation safety studies by delivering accurate counts directly to research stakeholders.",
-          links: [],
-          tags: ["YOLO", "OpenCV", "Linux", "Automation"],
-        },
-        {
-          name: "Agile Cart with AWS CI/CD Pipeline",
-          description:
-            "Full-stack e-commerce experience featuring user registration, cart management, and admin dashboards for product and order control.",
-          impact: "Integrated Stripe for secure payments and delivered 99.9% uptime by hosting the Serverless stack on AWS.",
-          links: [{ label: "Request Details", href: "mailto:tejas.guduru@gmail.com" }],
-          tags: ["AWS", "Serverless", "Stripe", "React", "Lambda", "DynamoDB"],
-        },
-      ];
-
-      const skills = [
-        { title: "Programming Languages", items: ["C/C++", "Python", "JavaScript"] },
-        {
-          title: "Web & Application Tech",
-          items: ["REST APIs", "Node.js", "React.js", "Django", "Flask", "HTML/CSS"],
-        },
-        { title: "Databases", items: ["MongoDB", "PostgreSQL", "Microsoft SQL Server"] },
-        {
-          title: "Cloud & Tools",
-          items: ["AWS", "Redis", "Godot", "OpenXR", "MFC", "DevOps"],
-        },
-        {
-          title: "Version Control & Process",
-          items: ["Git", "Microsoft TFS", "Agile Collaboration"],
-        },
-        {
-          title: "Soft Skills",
-          items: ["Problem Solving", "Critical Thinking", "Communication", "Team Collaboration"],
-        },
-      ];
-
-      const education = [
-        {
-          school: "University of Wisconsin–Milwaukee",
-          degree: "Master's, Computer Science",
-          period: "Sep 2023 – May 2025",
-          detail: "GPA: 3.4",
-        },
-        {
-          school: "JNTU Hyderabad",
-          degree: "Bachelor's, Computer Science",
-          period: "Sep 2014 – Apr 2018",
-          detail: "Focus: Computer Science",
-        },
-      ];
-
+    function Hero({ dark }) {
       return (
-        <div className={darkMode ? "dark" : ""}>
-          <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-            <header className="relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-400 opacity-90"></div>
-              <div className="relative max-w-6xl mx-auto px-6 pt-16 pb-24 text-white">
-                <div className="flex justify-end">
-                  <button
-                    className="border px-4 py-1.5 rounded-full border-white text-white text-sm font-semibold"
-                    onClick={() => setDarkMode(!darkMode)}
-                  >
-                    {darkMode ? "Light Mode" : "Dark Mode"}
-                  </button>
-                </div>
-                <div className="grid md:grid-cols-3 gap-8 items-center mt-6">
-                  <div className="md:col-span-2">
-                    <p className="uppercase tracking-[0.3em] text-sm text-cyan-100">Tejas Guduru</p>
-                    <h1 className="text-4xl md:text-5xl font-extrabold mt-4 leading-tight">
-                      Software engineer delivering scalable web, cloud, and AI solutions for transportation and finance teams.
-                    </h1>
-                    <p className="mt-4 text-lg text-cyan-50">
-                      MS Computer Science @ UWM · 5+ years across FactSet, Cyient, and IPIT labs · Focused on performant data systems, cloud deployments, and computer vision.
-                    </p>
-                    <div className="mt-6 grid gap-4 text-sm text-cyan-50 md:grid-cols-2">
-                      <p><span className="font-semibold text-white">Phone:</span> <a href="tel:+14145540441" className="hover:underline">+1 (414) 554-0441</a></p>
-                      <p><span className="font-semibold text-white">Email:</span> <a href="mailto:tejas.guduru@gmail.com" className="hover:underline">tejas.guduru@gmail.com</a></p>
-                      <p><span className="font-semibold text-white">Location:</span> Milwaukee, WI, USA</p>
-                      <p><span className="font-semibold text-white">LinkedIn:</span> <a href="https://www.linkedin.com/in/tejasguduru" target="_blank" className="hover:underline">/in/tejasguduru</a></p>
-                    </div>
-                    <div className="mt-8 flex flex-wrap gap-4">
-                      <a
-                        href="https://www.linkedin.com/in/tejasguduru/details/resume/"
-                        target="_blank"
-                        className="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold shadow-lg hover:-translate-y-0.5 transform transition"
-                      >
-                        Download Resume
-                      </a>
-                      <a
-                        href="mailto:tejas.guduru@gmail.com"
-                        className="border border-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition"
-                      >
-                        Schedule a Call
-                      </a>
-                    </div>
+        <section id="top" className={`relative min-h-screen flex flex-col justify-center overflow-hidden ${dark ? 'bg-zinc-950' : 'bg-slate-50'}`}>
+          <div className={`absolute inset-0 bg-dots ${dark ? 'opacity-40' : 'opacity-20'}`} />
+          <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-1/3 left-1/4 w-72 h-72 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-20">
+            <div className="max-w-4xl">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-indigo-500/10 border border-indigo-500/25 rounded-full text-indigo-300 text-sm font-medium mb-8">
+                <span className="w-2 h-2 bg-green-400 rounded-full" style={{animation:'pulse 2s ease-in-out infinite'}} />
+                Open to new opportunities
+              </div>
+
+              <h1 className={`text-6xl md:text-8xl font-black mb-4 leading-none tracking-tight ${dark ? 'text-white' : 'text-gray-900'}`}>
+                Tejas<br />
+                <span className="gradient-text">Guduru</span>
+              </h1>
+
+              <div className={`text-xl md:text-2xl font-semibold mb-6 h-8 ${dark ? 'text-zinc-400' : 'text-gray-500'}`}>
+                <Typewriter texts={["AI/ML Engineer", "Computer Vision", "RAG & LLM Integration", "Full-Stack Developer", "Data Infrastructure"]} />
+              </div>
+
+              <p className={`text-lg max-w-2xl leading-relaxed mb-10 ${dark ? 'text-zinc-400' : 'text-gray-600'}`}>
+                Software Engineer with <span className={`font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>6+ years</span> building scalable,
+                data-driven systems across backend, full-stack, and applied AI.
+                Currently at <span className="text-indigo-400 font-semibold">UWM's IPIT</span> — building computer vision pipelines,
+                RAG systems, and real-time analytics dashboards for statewide transportation infrastructure.
+              </p>
+
+              <div className="flex flex-wrap gap-4 mb-16">
+                <a href="mailto:tejas.guduru@gmail.com"
+                  className="px-7 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all hover:-translate-y-0.5 shadow-lg shadow-indigo-500/25">
+                  Get in touch →
+                </a>
+                <a href="https://www.linkedin.com/in/tejasguduru" target="_blank" rel="noopener noreferrer"
+                  className={`px-7 py-3.5 font-semibold rounded-xl border transition-all hover:-translate-y-0.5 ${dark ? 'bg-zinc-800 hover:bg-zinc-700 text-white border-zinc-700' : 'bg-white hover:bg-gray-50 text-gray-800 border-gray-200 shadow-sm'}`}>
+                  LinkedIn
+                </a>
+                <a href="https://github.com/gtejas1" target="_blank" rel="noopener noreferrer"
+                  className={`px-7 py-3.5 font-semibold rounded-xl border transition-all hover:-translate-y-0.5 ${dark ? 'bg-zinc-800 hover:bg-zinc-700 text-white border-zinc-700' : 'bg-white hover:bg-gray-50 text-gray-800 border-gray-200 shadow-sm'}`}>
+                  GitHub
+                </a>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[
+                  { label: "Years Experience", value: "6+",             icon: "⚡" },
+                  { label: "Core Focus",        value: "AI / ML",        icon: "🤖" },
+                  { label: "Location",           value: "Milwaukee, WI",  icon: "📍" },
+                  { label: "Work Auth",           value: "OPT · STEM-OPT eligible", icon: "✅" },
+                ].map(s => (
+                  <div key={s.label}
+                    className={`rounded-2xl p-4 border ${dark ? 'bg-zinc-900/70 border-zinc-800' : 'bg-white border-gray-200 shadow-sm'}`}>
+                    <div className="text-2xl mb-1">{s.icon}</div>
+                    <div className={`font-bold text-base leading-snug ${dark ? 'text-white' : 'text-gray-900'}`}>{s.value}</div>
+                    <div className={`text-xs mt-0.5 ${dark ? 'text-zinc-500' : 'text-gray-400'}`}>{s.label}</div>
                   </div>
-                  <div className="bg-white/10 backdrop-blur rounded-3xl p-6 shadow-2xl border border-white/20">
-                    <p className="text-sm uppercase tracking-widest text-cyan-100">Currently</p>
-                    <h3 className="text-2xl font-bold mt-2">Web Developer</h3>
-                    <p className="text-cyan-50 mt-2">
-                      Building full-stack data applications and computer-vision analytics for the University of Wisconsin–Milwaukee.
-                    </p>
-                    <div className="mt-6 space-y-2 text-sm">
-                      <p><span className="font-semibold">Location:</span> Milwaukee, WI</p>
-                      <p><span className="font-semibold">Focus:</span> Python, React, AWS, Computer Vision</p>
-                      <p><span className="font-semibold">Availability:</span> Actively seeking software roles</p>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-zinc-600">
+            <span className="text-xs tracking-widest uppercase">scroll</span>
+            <div className="w-px h-8 bg-gradient-to-b from-zinc-600 to-transparent" />
+          </div>
+        </section>
+      );
+    }
+
+    /* ─── About ─────────────────────────────────────────────────────────── */
+
+    function About({ dark }) {
+      const ref = useFadeUp();
+      return (
+        <section id="about" className={`py-24 ${dark ? 'bg-zinc-900/40' : 'bg-white'}`}>
+          <div className="max-w-6xl mx-auto px-6">
+            <div ref={ref}>
+              <span className="text-indigo-400 text-sm font-semibold uppercase tracking-widest">Who I am</span>
+              <h2 className={`text-4xl font-black mt-2 mb-8 ${dark ? 'text-white' : 'text-gray-900'}`}>About</h2>
+
+              <div className="grid md:grid-cols-3 gap-8 items-start">
+                <div className="md:col-span-2">
+                  <p className={`text-lg leading-relaxed mb-4 ${dark ? 'text-zinc-300' : 'text-gray-600'}`}>
+                    I'm a Software Engineer specializing in the intersection of{" "}
+                    <strong className={dark ? 'text-white' : 'text-gray-900'}>AI/ML, computer vision, and full-stack development</strong>.
+                    I enjoy turning complex real-world problems into practical, high-impact software — from real-time pedestrian detection systems
+                    to RAG-powered document search to aircraft engine diagnostics.
+                  </p>
+                  <p className={`text-lg leading-relaxed ${dark ? 'text-zinc-400' : 'text-gray-500'}`}>
+                    Beyond technical execution, I value clean system design, reliability, and cross-functional collaboration.
+                    I'm actively seeking{" "}
+                    <strong className={dark ? 'text-white' : 'text-gray-900'}>Software Engineering / AI / ML roles</strong>{" "}
+                    where I can contribute to building intelligent, scalable systems and continue growing as an engineer.
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  {[
+                    { label: "Email",    val: "tejas.guduru@gmail.com", href: "mailto:tejas.guduru@gmail.com" },
+                    { label: "Phone",    val: "(414) 554-0441",          href: "tel:+14145540441" },
+                    { label: "LinkedIn", val: "tejasguduru",             href: "https://www.linkedin.com/in/tejasguduru" },
+                  ].map(c => (
+                    <div key={c.label} className={`rounded-xl p-4 border ${dark ? 'bg-zinc-900 border-zinc-800' : 'bg-gray-50 border-gray-200'}`}>
+                      <div className={`text-xs uppercase tracking-wide mb-1 ${dark ? 'text-zinc-500' : 'text-gray-400'}`}>{c.label}</div>
+                      <a href={c.href}
+                        target={c.href.startsWith('http') ? '_blank' : undefined}
+                        rel="noopener noreferrer"
+                        className="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors">
+                        {c.val}
+                      </a>
                     </div>
+                  ))}
+
+                  <div className={`rounded-xl p-4 border ${dark ? 'bg-zinc-900 border-zinc-800' : 'bg-gray-50 border-gray-200'}`}>
+                    <div className={`text-xs uppercase tracking-wide mb-2 ${dark ? 'text-zinc-500' : 'text-gray-400'}`}>Education</div>
+                    <p className={`text-sm font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>M.S. Computer Science</p>
+                    <p className={`text-xs ${dark ? 'text-zinc-400' : 'text-gray-500'}`}>UWM · GPA 3.4 · 2023–2025</p>
+                    <p className={`text-sm font-semibold mt-2 ${dark ? 'text-white' : 'text-gray-900'}`}>B.Tech CS &amp; Engineering</p>
+                    <p className={`text-xs ${dark ? 'text-zinc-400' : 'text-gray-500'}`}>CVR College of Engineering · 2014–2018</p>
                   </div>
                 </div>
               </div>
-              <svg className="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill="currentColor" fillOpacity="0.15" d="M0,192L48,170.7C96,149,192,107,288,122.7C384,139,480,213,576,213.3C672,213,768,139,864,90.7C960,43,1056,21,1152,32C1248,43,1344,85,1392,106.7L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z" />
-              </svg>
-            </header>
-
-            <main className="max-w-6xl mx-auto px-6 -mt-16 space-y-20 pb-20">
-              <section className="bg-white dark:bg-gray-800 shadow-xl rounded-3xl p-10">
-                <SectionTitle
-                  eyebrow="Snapshot"
-                  title="Impact at a glance"
-                  subtitle="Software engineer with a graduate CS background, strong systems fundamentals, and a track record of shipping data-driven products."
-                />
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                  {stats.map((stat) => (
-                    <div key={stat.label} className="text-center border border-gray-100 dark:border-gray-700 rounded-2xl p-6 shadow-sm">
-                      <p className="text-3xl font-extrabold text-blue-600 dark:text-cyan-400">{stat.value}</p>
-                      <p className="mt-2 text-sm uppercase tracking-wide text-gray-500">{stat.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section>
-                <SectionTitle
-                  eyebrow="Experience"
-                  title="Leading with clarity and measurable outcomes"
-                  subtitle="Recent roles where I delivered production systems, mentored teammates, and partnered with stakeholders."
-                />
-                <div className="space-y-10">
-                  {experiences.map((exp) => (
-                    <article key={exp.role} className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700">
-                      <div className="flex flex-wrap justify-between items-start gap-4">
-                        <div>
-                          <p className="text-sm uppercase tracking-widest text-blue-500">{exp.period}</p>
-                          <h3 className="text-2xl font-bold mt-2">{exp.role}</h3>
-                          <p className="text-gray-500 dark:text-gray-300">{exp.company}</p>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {exp.tech.map((tech) => (
-                            <Tag key={tech} text={tech} />
-                          ))}
-                        </div>
-                      </div>
-                      <p className="mt-4 text-lg text-gray-700 dark:text-gray-200">{exp.summary}</p>
-                      <ul className="mt-6 space-y-3 text-gray-600 dark:text-gray-300 list-disc list-inside">
-                        {exp.highlights.map((item, idx) => (
-                          <li key={idx}>{item}</li>
-                        ))}
-                      </ul>
-                    </article>
-                  ))}
-                </div>
-              </section>
-
-              <section className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl">
-                <SectionTitle
-                  eyebrow="Education"
-                  title="Formal training"
-                  subtitle="Blending advanced computer science study with hands-on software delivery."
-                />
-                <div className="space-y-6">
-                  {education.map((entry) => (
-                    <div key={entry.school} className="flex flex-col md:flex-row md:items-center md:justify-between border border-gray-100 dark:border-gray-700 rounded-2xl p-6">
-                      <div>
-                        <p className="text-sm uppercase tracking-widest text-blue-500">{entry.period}</p>
-                        <h3 className="text-xl font-semibold mt-2">{entry.school}</h3>
-                        <p className="text-gray-600 dark:text-gray-300">{entry.degree}</p>
-                      </div>
-                      <p className="mt-4 md:mt-0 text-gray-500 dark:text-gray-400">{entry.detail}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section>
-                <SectionTitle
-                  eyebrow="Projects"
-                  title="Recent builds I'm proud of"
-                  subtitle="Pragmatic experiments that shipped, earned users, or accelerated research."
-                />
-                <div className="grid md:grid-cols-3 gap-6">
-                  {projects.map((project) => (
-                    <article key={project.name} className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-xl font-semibold">{project.name}</h3>
-                        <span className="text-2xl">🚀</span>
-                      </div>
-                      <p className="mt-3 text-gray-600 dark:text-gray-300 flex-1">{project.description}</p>
-                      <p className="mt-4 text-sm font-semibold text-blue-500">{project.impact}</p>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {project.tags.map((tag) => (
-                          <Tag key={tag} text={tag} />
-                        ))}
-                      </div>
-                      {project.links && project.links.length > 0 && (
-                        <div className="mt-4 flex flex-wrap gap-4 text-sm font-semibold">
-                          {project.links.map((link) => (
-                            <a key={link.label} href={link.href} target="_blank" className="text-blue-600 hover:underline">
-                              {link.label}
-                            </a>
-                          ))}
-                        </div>
-                      )}
-                    </article>
-                  ))}
-                </div>
-              </section>
-
-              <section className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl">
-                <SectionTitle
-                  eyebrow="Skills"
-                  title="Tooling I reach for"
-                  subtitle="Comfortable jumping across the stack, wrangling data, and storytelling through UX."
-                />
-                <div className="grid md:grid-cols-3 gap-8">
-                  {skills.map((group) => (
-                    <div key={group.title} className="border border-gray-100 dark:border-gray-700 rounded-2xl p-6">
-                      <h3 className="font-semibold text-lg text-blue-500">{group.title}</h3>
-                      <ul className="mt-4 space-y-2 text-gray-700 dark:text-gray-200">
-                        {group.items.map((item) => (
-                          <li key={item} className="flex items-center">
-                            <span className="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section>
-                <SectionTitle
-                  eyebrow="GitHub"
-                  title="Recently updated repositories"
-                  subtitle="A quick peek into the playground."
-                />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {repos.length === 0 && (
-                    <p className="text-gray-500">Fetching repositories...</p>
-                  )}
-                  {repos.map((repo) => (
-                    <div key={repo.id} className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700">
-                      <h3 className="text-lg font-semibold">
-                        <a href={repo.html_url} target="_blank" className="hover:underline text-blue-600">
-                          {repo.name}
-                        </a>
-                      </h3>
-                      <p className="text-sm mt-2 text-gray-600 dark:text-gray-300">{repo.description || "No description provided."}</p>
-                      <p className="text-xs mt-4 text-gray-500 dark:text-gray-400">Language: {repo.language || "N/A"}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-3xl p-10 shadow-2xl">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                  <div>
-                    <p className="uppercase tracking-[0.3em] text-sm text-blue-100">Next role</p>
-                    <h3 className="text-3xl font-extrabold mt-3">Ready to contribute as a software engineer.</h3>
-                    <p className="mt-4 text-blue-50 max-w-2xl">
-                      I'm seeking opportunities where I can apply my experience in Python, React, AWS, and computer vision to build performant, scalable solutions. Let's connect if you're hiring for teams that value impact and continuous learning.
-                    </p>
-                  </div>
-                  <div className="space-y-4 text-center">
-                    <a href="mailto:tejas.guduru@gmail.com" className="inline-block bg-white text-blue-700 font-semibold px-8 py-3 rounded-full shadow-lg">
-                      Email Me
-                    </a>
-                    <a href="https://www.linkedin.com/in/tejasguduru" target="_blank" className="inline-block border border-white px-8 py-3 rounded-full font-semibold">
-                      LinkedIn
-                    </a>
-                  </div>
-                </div>
-              </section>
-            </main>
-
-            <footer className="text-center py-10 text-sm text-gray-500 dark:text-gray-400">
-              &copy; {new Date().getFullYear()} Tejas Guduru. Crafted with React + TailwindCSS.
-            </footer>
+            </div>
           </div>
-        </div>
+        </section>
       );
     }
 
-    ReactDOM.render(<App />, document.getElementById('root'));
+    /* ─── Experience ────────────────────────────────────────────────────── */
+
+    function Experience({ dark }) {
+      const [expanded, setExpanded] = useState(0);
+      const ref = useFadeUp();
+
+      return (
+        <section id="experience" className={`py-24 ${dark ? 'bg-zinc-950' : 'bg-slate-50'}`}>
+          <div className="max-w-6xl mx-auto px-6">
+            <div ref={ref}>
+              <span className="text-indigo-400 text-sm font-semibold uppercase tracking-widest">Career</span>
+              <h2 className={`text-4xl font-black mt-2 mb-12 ${dark ? 'text-white' : 'text-gray-900'}`}>Experience</h2>
+            </div>
+
+            <div className="relative">
+              <div className="absolute left-4 md:left-5 top-0 bottom-0 w-px bg-gradient-to-b from-indigo-500 via-violet-500 to-cyan-500 opacity-25" />
+
+              <div className="space-y-6">
+                {EXPERIENCE.map((exp, idx) => (
+                  <div key={idx} className="relative pl-12 md:pl-16">
+                    <div className={`absolute left-4 md:left-5 top-6 w-3 h-3 rounded-full border-2 -translate-x-1/2 ${
+                      exp.current
+                        ? 'bg-indigo-500 border-indigo-400 shadow-md shadow-indigo-500/60'
+                        : dark ? 'bg-zinc-700 border-zinc-600' : 'bg-gray-300 border-gray-400'
+                    }`} />
+
+                    <div
+                      onClick={() => setExpanded(expanded === idx ? null : idx)}
+                      className={`rounded-2xl p-6 border cursor-pointer card-hover ${
+                        expanded === idx
+                          ? dark ? 'bg-zinc-900 border-indigo-500/40' : 'bg-white border-indigo-300 shadow-md'
+                          : dark ? 'bg-zinc-900 border-zinc-800 hover:border-zinc-700' : 'bg-white border-gray-200 hover:border-gray-300 shadow-sm'
+                      }`}>
+
+                      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-1 mb-3">
+                        <div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h3 className={`font-bold text-lg ${dark ? 'text-white' : 'text-gray-900'}`}>{exp.role}</h3>
+                            {exp.current && (
+                              <span className="px-2 py-0.5 bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs rounded-full font-medium">
+                                Current
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-indigo-400 font-semibold text-sm">{exp.company}</p>
+                          {exp.dept && <p className={`text-xs mt-0.5 ${dark ? 'text-zinc-500' : 'text-gray-400'}`}>{exp.dept}</p>}
+                        </div>
+                        <div className="shrink-0 text-right">
+                          <p className={`text-sm ${dark ? 'text-zinc-400' : 'text-gray-500'}`}>{exp.period}</p>
+                          <p className={`text-xs ${dark ? 'text-zinc-600' : 'text-gray-400'}`}>{exp.location}</p>
+                        </div>
+                      </div>
+
+                      <div className={`overflow-hidden transition-all duration-300 ${expanded === idx ? 'max-h-96 mb-4' : 'max-h-0'}`}>
+                        <ul className="space-y-2 mt-1">
+                          {exp.highlights.map((h, i) => (
+                            <li key={i} className={`flex gap-3 text-sm leading-relaxed ${dark ? 'text-zinc-400' : 'text-gray-600'}`}>
+                              <span className="text-indigo-400 shrink-0 mt-0.5">→</span>
+                              {h}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2">
+                        {exp.tags.map(t => (
+                          <span key={t}
+                            className={`px-2.5 py-1 text-xs rounded-lg border ${
+                              dark ? 'bg-zinc-800 text-zinc-300 border-zinc-700' : 'bg-gray-100 text-gray-600 border-gray-200'
+                            }`}>
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className={`mt-3 text-xs ${dark ? 'text-zinc-600' : 'text-gray-400'}`}>
+                        {expanded === idx ? '▲ Collapse' : '▼ Show details'}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─── Skills ────────────────────────────────────────────────────────── */
+
+    function Skills({ dark }) {
+      const ref = useFadeUp();
+      return (
+        <section id="skills" className={`py-24 ${dark ? 'bg-zinc-900/40' : 'bg-white'}`}>
+          <div className="max-w-6xl mx-auto px-6">
+            <div ref={ref}>
+              <span className="text-indigo-400 text-sm font-semibold uppercase tracking-widest">Toolkit</span>
+              <h2 className={`text-4xl font-black mt-2 mb-12 ${dark ? 'text-white' : 'text-gray-900'}`}>Skills</h2>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {Object.entries(SKILLS).map(([cat, items]) => (
+                <div key={cat}
+                  className={`rounded-2xl p-6 border card-hover ${dark ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-gray-200 shadow-sm'}`}>
+                  <h3 className="text-indigo-400 font-semibold text-xs uppercase tracking-widest mb-4">{cat}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {items.map(s => (
+                      <span key={s}
+                        className={`px-3 py-1.5 text-sm rounded-lg border transition-colors cursor-default ${
+                          dark ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border-zinc-700' : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200'
+                        }`}>
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─── Projects ──────────────────────────────────────────────────────── */
+
+    function Projects({ dark }) {
+      const ref = useFadeUp();
+      return (
+        <section id="projects" className={`py-24 ${dark ? 'bg-zinc-950' : 'bg-slate-50'}`}>
+          <div className="max-w-6xl mx-auto px-6">
+            <div ref={ref}>
+              <span className="text-indigo-400 text-sm font-semibold uppercase tracking-widest">Work</span>
+              <h2 className={`text-4xl font-black mt-2 mb-3 ${dark ? 'text-white' : 'text-gray-900'}`}>Projects</h2>
+              <p className={`mb-12 ${dark ? 'text-zinc-400' : 'text-gray-500'}`}>Key systems and applications I've built</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {PROJECTS.map((p, idx) => (
+                <div key={idx}
+                  className={`rounded-2xl p-6 border card-hover group ${
+                    dark ? 'bg-zinc-900 border-zinc-800 hover:border-zinc-600' : 'bg-white border-gray-200 hover:border-indigo-200 shadow-sm'
+                  }`}>
+                  <div className="text-3xl mb-4">{p.icon}</div>
+                  <h3 className={`font-bold text-base mb-2 group-hover:text-indigo-400 transition-colors ${dark ? 'text-white' : 'text-gray-900'}`}>
+                    {p.title}
+                  </h3>
+                  <p className={`text-sm leading-relaxed mb-4 ${dark ? 'text-zinc-400' : 'text-gray-500'}`}>{p.desc}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {p.tags.map(t => (
+                      <span key={t} className="px-2 py-1 bg-indigo-500/10 text-indigo-400 text-xs rounded-md border border-indigo-500/20">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─── GitHub ────────────────────────────────────────────────────────── */
+
+    function GitHub({ dark }) {
+      const [repos, setRepos] = useState([]);
+      const ref = useFadeUp();
+
+      useEffect(() => {
+        fetch('https://api.github.com/users/gtejas1/repos?sort=updated&per_page=6')
+          .then(r => r.json())
+          .then(d => Array.isArray(d) && setRepos(d.slice(0, 6)))
+          .catch(() => {});
+      }, []);
+
+      if (!repos.length) return null;
+
+      return (
+        <section className={`py-20 ${dark ? 'bg-zinc-900/40' : 'bg-white'}`}>
+          <div className="max-w-6xl mx-auto px-6">
+            <div ref={ref}>
+              <span className="text-indigo-400 text-sm font-semibold uppercase tracking-widest">Open Source</span>
+              <h2 className={`text-3xl font-black mt-2 mb-10 ${dark ? 'text-white' : 'text-gray-900'}`}>
+                Recent GitHub Repos
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {repos.map(r => (
+                <a key={r.id} href={r.html_url} target="_blank" rel="noopener noreferrer"
+                  className={`rounded-2xl p-5 border card-hover block group ${
+                    dark ? 'bg-zinc-900 border-zinc-800 hover:border-zinc-600' : 'bg-gray-50 border-gray-200 hover:border-indigo-200'
+                  }`}>
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <h3 className={`font-semibold text-sm group-hover:text-indigo-400 transition-colors truncate ${dark ? 'text-white' : 'text-gray-900'}`}>
+                      {r.name}
+                    </h3>
+                    <span className={`text-xs shrink-0 ${dark ? 'text-zinc-600' : 'text-gray-400'}`}>↗</span>
+                  </div>
+                  {r.description && (
+                    <p className={`text-xs leading-relaxed mb-3 line-clamp-2 ${dark ? 'text-zinc-400' : 'text-gray-500'}`}>{r.description}</p>
+                  )}
+                  {r.language && (
+                    <span className={`text-xs px-2 py-1 rounded-md ${dark ? 'bg-zinc-800 text-zinc-400 border border-zinc-700' : 'bg-gray-200 text-gray-600'}`}>
+                      {r.language}
+                    </span>
+                  )}
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─── Contact ───────────────────────────────────────────────────────── */
+
+    function Contact({ dark }) {
+      const ref = useFadeUp();
+      return (
+        <section id="contact" className={`py-24 ${dark ? 'bg-zinc-950' : 'bg-slate-50'}`}>
+          <div className="max-w-6xl mx-auto px-6">
+            <div ref={ref} className="max-w-2xl mx-auto text-center">
+              <span className="text-indigo-400 text-sm font-semibold uppercase tracking-widest">Say hello</span>
+              <h2 className={`text-4xl md:text-5xl font-black mt-2 mb-4 ${dark ? 'text-white' : 'text-gray-900'}`}>
+                Let's work together
+              </h2>
+              <p className={`text-lg mb-3 ${dark ? 'text-zinc-400' : 'text-gray-500'}`}>
+                Actively seeking Software Engineering / AI / ML roles.
+              </p>
+              <p className="text-indigo-400 text-sm font-medium mb-12">
+                OPT authorized · STEM-OPT eligible · No immediate visa sponsorship required
+              </p>
+
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="mailto:tejas.guduru@gmail.com"
+                  className="flex items-center justify-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all hover:-translate-y-0.5 shadow-lg shadow-indigo-500/25">
+                  📧 tejas.guduru@gmail.com
+                </a>
+                <a href="https://www.linkedin.com/in/tejasguduru" target="_blank" rel="noopener noreferrer"
+                  className={`flex items-center justify-center gap-2 px-6 py-3.5 font-semibold rounded-xl border transition-all hover:-translate-y-0.5 ${
+                    dark ? 'bg-zinc-800 hover:bg-zinc-700 text-white border-zinc-700' : 'bg-white hover:bg-gray-50 text-gray-800 border-gray-200 shadow-sm'
+                  }`}>
+                  LinkedIn Profile
+                </a>
+                <a href="tel:+14145540441"
+                  className={`flex items-center justify-center gap-2 px-6 py-3.5 font-semibold rounded-xl border transition-all hover:-translate-y-0.5 ${
+                    dark ? 'bg-zinc-800 hover:bg-zinc-700 text-white border-zinc-700' : 'bg-white hover:bg-gray-50 text-gray-800 border-gray-200 shadow-sm'
+                  }`}>
+                  📞 (414) 554-0441
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─── Footer ────────────────────────────────────────────────────────── */
+
+    function Footer({ dark }) {
+      return (
+        <footer className={`border-t py-8 ${dark ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-gray-200'}`}>
+          <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className={`text-sm ${dark ? 'text-zinc-500' : 'text-gray-400'}`}>
+              © 2025 Tejas Guduru · Built with React &amp; Tailwind
+            </p>
+            <div className="flex items-center gap-6">
+              {[
+                { label: "LinkedIn", href: "https://www.linkedin.com/in/tejasguduru" },
+                { label: "GitHub",   href: "https://github.com/gtejas1" },
+                { label: "Email",    href: "mailto:tejas.guduru@gmail.com" },
+              ].map(l => (
+                <a key={l.label} href={l.href}
+                  target={l.href.startsWith('http') ? '_blank' : undefined}
+                  rel="noopener noreferrer"
+                  className={`text-sm transition-colors ${dark ? 'text-zinc-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'}`}>
+                  {l.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </footer>
+      );
+    }
+
+    /* ─── App ───────────────────────────────────────────────────────────── */
+
+    function App() {
+      const [dark, setDark] = useState(true);
+
+      useEffect(() => {
+        document.documentElement.classList.toggle('dark', dark);
+        document.body.style.backgroundColor = dark ? '#09090b' : '#f8fafc';
+      }, [dark]);
+
+      return (
+        <>
+          <Nav dark={dark} toggleDark={() => setDark(d => !d)} />
+          <main>
+            <Hero dark={dark} />
+            <About dark={dark} />
+            <Experience dark={dark} />
+            <Skills dark={dark} />
+            <Projects dark={dark} />
+            <GitHub dark={dark} />
+            <Contact dark={dark} />
+          </main>
+          <Footer dark={dark} />
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
 </html>
